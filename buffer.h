@@ -1,5 +1,5 @@
-#ifndef EDITOR_H_
-#define EDITOR_H_
+#ifndef BUFFER_H_
+#define BUFFER_H_
 #include <stdlib.h>
 
 typedef struct {
@@ -22,11 +22,11 @@ typedef struct {
 } Editor;
 
 void editorSaveToFile(const Editor *editor, const char *file_path);
-
+void editorLoadFromFile(Editor *editor, const char *file_path);
 void editorInsert(Editor *editor, const char *text);
 void editorInsertNewLine(Editor *editor);
 void editorBackspace(Editor *editor);
 void editorDelete(Editor *editor);
 const char *editorCharUnderCursor(const Editor *editor);
 
-#endif //EDITOR_H_
+#endif //BUFFER_H_

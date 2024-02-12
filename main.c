@@ -90,7 +90,19 @@ void renderCursor() {
 	}
 }
 
-int main() {
+int main(int argc, char **argv) {
+	
+	const char *file_path = NULL;
+	
+	if(argc > 1) {
+		file_path = argv[1];
+	}
+
+	if (file_path) {
+		editorLoadFromFile(&editor, file_path);
+	}
+	
+
 	initSDL();
 
 	SDL_Event e;

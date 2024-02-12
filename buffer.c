@@ -148,6 +148,11 @@ const char *editorCharUnderCursor(const Editor *editor) {
 	return NULL;
 }
 
+void editorLoadNewLine(Editor *editor, char *text) {
+	editorInsertNewLine(editor);
+	editorInsert(editor, text);
+}
+
 void editorSaveToFile(const Editor *editor, const char *file_path) {
 	FILE *f = fopen(file_path, "w");
 	if (f == NULL) {
@@ -162,7 +167,31 @@ void editorSaveToFile(const Editor *editor, const char *file_path) {
 	fclose(f);
 }
 
+void editorLoadFromFile(Editor *editor, const char *file_path) {	
+	FILE *f = fopen(file_path, "r");
+	if (f == NULL) {
+		fprintf(stderr, "ERROR: cannot load file");
+		exit(1);
+	}
+	
+	for (size_t i = 0; i < editor->size; ++i) {
+		free(editor->lines[i].chars);
+	}
+	free(editor->lines);
+	
+	editor->lines = NULL;
+	editor->size = 0;
+	editor->capacity = 0;
+	editor->cursor_row = 0;
+	editor->cursor_col = 0;
 
+	char chunk[1024];
+	while (fgets(chunk, sizeof(chunk), f) != NULL) {
+		editorLoadNewLine(editor, chunk);
+	}
+	editor->cursor_col = 0;
+	fclose(f);
+}
 
 
 
